@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<!--此网页演示了html2canvas网页截图下载 -->
+    <head>
+        <!-- base.js实际上是jquery库,html2canvas.js是html2canvas自带的js库 -->
+
+        <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+        <script type="text/javascript" src="js/html2canvas.min.js"></script>
+        <title>MyHtml.html</title>
+        <style type="text/css">
+             .a{
+                width: 300px;
+                height: 200px;
+                background-color: red;
+             }
+             .b{
+                width: 100px;
+                height: 100px;
+                background-color: yellow;
+             }
+        </style>
+        <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+        <meta http-equiv="description" content="this is my page">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+        <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<!--需要注意的是,这里一定要等待js库和网页加载完毕后再执行函数  -->
+<!-- html2canvas()中,第一个参数是要截图的Dom对象，第二个参数时渲染完成后回调的canvas对象。  -->
+        <script type="text/javascript">
+           $(function(){
+                  print();
+                      });
+
+function print()
+{
+
+    var scaleBy = window.devicePixelRatio;
+
+    var w = $(".livestream-guide-wapper").width();
+    var h = $(".livestream-guide-wapper").height();
+    var canvas = document.createElement("canvas");  
+    var canvas.width = w * scaleBy;  
+    var canvas.height = h * scaleBy;  
+    var canvas.style.width = w  + "px";  
+    varcanvas.style.height = h  + "px";  
+    var context = canvas.getContext("2d");//然后将画布缩放，将图像放大两倍画到画布上  ,提高清晰度
+    context.scale(scaleBy,scaleBy);  //再缩小
+
+    html2canvas( $("div.a") , 
+    {
+        canvas: canvas,
+        useCORS: true,                     //跨域  
+        height: $(document).height()+50,  //截取不可见区域
+
+        onrendered: function(canvas) 
+        {   
+            $('#down_button').attr( 'href' , canvas.toDataURL() ) ;
+
+            //canvas.toDataURL() 64位，图片地址
+
+            $('#down_button').attr( 'download' , 'myjobdeer.png' ) ;
+        }
+    });
+}
+</script>
+    </head>
+    <body>
+        <div class="a">
+            <div class="b">
+                
+            </div>
+        </div>
+<a type="button" id="down_button"><input type="button" value="下载"></a>
+<div class=""></div>
+    </body>
+</html>
